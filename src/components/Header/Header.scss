@@ -1,0 +1,23 @@
+.logo {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    color: #3A5A40;
+    animation: spin 5s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+.logo-content {
+    color: #3A5A40;
+    height: 12px;
+}
