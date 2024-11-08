@@ -42,7 +42,7 @@ const SideBar = (props) => {
                         }}
                     >
                         <FaReact size={'3em'} color={"#4AD5FF"} />
-                        <span onClick={() => navigate('/')}> Cheesethank</span>
+                        <span onClick={() => navigate('/')}> Menu</span>
                     </div>
                 </SidebarHeader>
 
