@@ -242,7 +242,9 @@ const QuizQA = (props) => {
         // }
         let questionClone = _.cloneDeep(questions);
         for (let i = 0; i < questionClone.length; i++) {
-            questionClone[i].imageFile = await toBase64(questionClone[i].imageFile)
+            if (questionClone[i].imageFile) {
+                questionClone[i].imageFile = await toBase64(questionClone[i].imageFile)
+            }
         }
         console.log(">>>> Question clone ", questionClone)
         // Phần này dưới back-end xử lý chủ yếu
