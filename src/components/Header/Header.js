@@ -19,11 +19,12 @@ const Header = () => {
     const account = useSelector(state => state.user.account);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const userRole = account?.role;  // Lấy vai trò của người dùng
 
     const handleLogOut = async () => {
         let res = await logout(account.email, account.refresh_token);
         if (res && res.EC === 0) {
-            //clear data redux
+            // Clear data Redux và điều hướng đến trang đăng nhập
             dispatch(doLogout());
             navigate('/login');
         } else {
@@ -32,11 +33,11 @@ const Header = () => {
     }
 
     const handleLogin = () => {
-        navigate('/login')
+        navigate('/login');
     }
 
     const handleRegister = () => {
-        navigate('/register')
+        navigate('/register');
     }
 
     return (
@@ -52,23 +53,33 @@ const Header = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavLink to="/" className='nav-link'>{t('header.home')}</NavLink>
-                        <NavLink to="/users" className='nav-link'>{t('header.user')}</NavLink>
-                        <NavLink to="/admins" className='nav-link'>{t('header.admin')}</NavLink>
+
+                        {/* Chỉ hiển thị liên kết "user" khi đã đăng nhập */}
+                        {isAuthenticated && (
+                            <NavLink to="/users" className='nav-link'>{t('header.user')}</NavLink>
+                        )}
+
+                        {/* Hiển thị liên kết "admin" chỉ khi người dùng có vai trò là "ADMIN" */}
+                        {userRole === 'ADMIN' && (
+                            <NavLink to="/admins" className='nav-link'>{t('header.admin')}</NavLink>
+                        )}
                     </Nav>
 
                     <Nav>
-                        {isAuthenticated === false ?
+                        {/* Hiển thị nút login và register khi chưa đăng nhập */}
+                        {!isAuthenticated ? (
                             <>
-                                <button className='btn-login' onClick={() => handleLogin()}>{t('header.logIn')}</button>
-                                <button className='btn-signup' onClick={() => handleRegister()}>{t('header.signUp')}</button>
+                                <button className='btn-login' onClick={handleLogin}>{t('header.logIn')}</button>
+                                <button className='btn-signup' onClick={handleRegister}>{t('header.signUp')}</button>
                             </>
-                            :
+                        ) : (
+                            // Hiển thị phần cài đặt và đăng xuất khi đã đăng nhập
                             <NavDropdown title={t('header.settings')} id="basic-nav-dropdown">
                                 <NavDropdown.Item>{t('header.profile')}</NavDropdown.Item>
-                                <NavDropdown.Item onClick={() => handleLogOut()}>{t('header.logOut')}</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogOut}>{t('header.logOut')}</NavDropdown.Item>
                                 <NavDropdown.Divider />
                             </NavDropdown>
-                        }
+                        )}
                         <Language />
                     </Nav>
                 </Navbar.Collapse>
