@@ -1,16 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 
-
 const ModalResult = (props) => {
-    const { show, setShow, dataModalResult } = props;
-
-    const { t } = useTranslation();
-
+    const { show, setShow, dataModalResult, handleShowAnswer } = props;
     const handleClose = () => setShow(false);
-
+    const { t } = useTranslation();
 
     return (
         <>
@@ -27,14 +23,17 @@ const ModalResult = (props) => {
                     <div>{t('modalResult.totalCorrectAnswers')}: <b>{dataModalResult.countCorrect}</b></div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={() => {
+                        handleClose();
+                        props.handleShowAnswer();
+                    }}>
                         {t('modalResult.showAnswers')}
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
                         {t('modalResult.close')}
                     </Button>
                 </Modal.Footer>
-            </Modal >
+            </Modal>
         </>
     );
 }

@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom"; // lấy được tham số trên url
+import { useParams, useLocation } from "react-router-dom";
 import { getDataQuiz, postSubmitQuiz } from "../../services/apiService";
 import _ from 'lodash';
 import './DetailQuiz.scss';
-import Question from './Question';
+import Question from "./Question";
 import ModalResult from "./ModalResult";
 import RightContent from "./Content/RightContent";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import { NavLink } from "react-router-dom";
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
 
 const DetailQuiz = (props) => {
+    const { t } = useTranslation();
     const params = useParams();
-    const location = useLocation(); // xác định được từ trang nào chuyển đến trang này 
+    const location = useLocation();
     const quizId = params.id;
-    const { t } = useTranslation(); // Khai báo t() để sử dụng chuỗi đa ngôn ngữ
     const [dataQuiz, setDataQuiz] = useState([]);
-    const [index, setIndex] = useState(0); // user đang ở đâu
+    const [index, setIndex] = useState(0);
+    const [isSubmitQuiz, setIsSubmitQuiz] = useState(false);
+    const [isShowAnswer, setIsShowAnswer] = useState(false);
+
     const [isShowModalResult, setIsShowModalResult] = useState(false);
-    const [dataModalResult, setDataModalResult] = useState({});
+    const [dataModalResult, setDataModalResult] = useState({})
 
     useEffect(() => {
         fetchQuestions();
@@ -29,7 +32,9 @@ const DetailQuiz = (props) => {
         if (res && res.EC === 0) {
             let raw = res.DT;
             let data = _.chain(raw)
+                // Group the elements of Array based on `id` property
                 .groupBy("id")
+                // `key` is group's name (color), `value` is the array of objects
                 .map((value, key) => {
                     let answers = [];
                     let questionDescription, image = null;
@@ -39,26 +44,51 @@ const DetailQuiz = (props) => {
                             image = item.image;
                         }
                         item.answers.isSelected = false;
+                        item.answers.isCorrect = false;
                         answers.push(item.answers);
-                    });
+                    })
                     answers = _.orderBy(answers, ['id'], ['asc']);
-                    return { questionId: key, answers, questionDescription, image };
+
+                    return {
+                        questionId: key,
+                        answers,
+                        questionDescription,
+                        image
+                    }
                 })
                 .value();
-            setDataQuiz(data);
+            setDataQuiz(data)
         }
-    };
+    }
+
 
     const handlePrev = () => {
-        if (index - 1 < 0)
-            return;
-        setIndex(index - 1);
-    };
+        if (index - 1 < 0) return;
+        setIndex(index - 1)
+    }
 
     const handleNext = () => {
         if (dataQuiz && dataQuiz.length > index + 1)
-            setIndex(index + 1);
-    };
+            setIndex(index + 1)
+    }
+
+    const handleCheckbox = (answerId, questionId) => {
+        let dataQuizClone = _.cloneDeep(dataQuiz); //react hook doesn't merge state
+        let question = dataQuizClone.find(item => +item.questionId === +questionId)
+        if (question && question.answers) {
+            question.answers = question.answers.map(item => {
+                if (+item.id === +answerId) {
+                    item.isSelected = !item.isSelected;
+                }
+                return item;
+            })
+        }
+        let index = dataQuizClone.findIndex(item => +item.questionId === +questionId)
+        if (index > -1) {
+            dataQuizClone[index] = question;
+            setDataQuiz(dataQuizClone);
+        }
+    }
 
     const handleFinishQuiz = async () => {
         let payload = {
@@ -71,53 +101,61 @@ const DetailQuiz = (props) => {
                 let questionId = question.questionId;
                 let userAnswerId = [];
 
-                // TO DO userAnswerId
                 question.answers.forEach(a => {
-                    if (a.isSelected) {
-                        userAnswerId.push(a.id);
+                    if (a.isSelected === true) {
+                        userAnswerId.push(a.id)
                     }
-                });
+                })
                 answers.push({
                     questionId: +questionId,
                     userAnswerId: userAnswerId
-                });
-            });
+                })
+            })
 
             payload.answers = answers;
-            // submit api
+            //submit api
             let res = await postSubmitQuiz(payload);
             if (res && res.EC === 0) {
+                setIsSubmitQuiz(true);
                 setDataModalResult({
                     countCorrect: res.DT.countCorrect,
                     countTotal: res.DT.countTotal,
-                    quizData: res.DT
-                });
+                    quizData: res.DT.quizData
+                })
                 setIsShowModalResult(true);
+
+                //update DataQuiz with correct answer
+                if (res.DT && res.DT.quizData) {
+                    let dataQuizClone = _.cloneDeep(dataQuiz);
+                    let a = res.DT.quizData;
+                    for (let q of a) {
+                        for (let i = 0; i < dataQuizClone.length; i++) {
+                            if (+q.questionId === +dataQuizClone[i].questionId) {
+                                //update answer
+                                let newAnswers = [];
+                                for (let j = 0; j < dataQuizClone[i].answers.length; j++) {
+                                    let s = q.systemAnswers.find(item => +item.id === +dataQuizClone[i].answers[j].id)
+                                    if (s) {
+                                        dataQuizClone[i].answers[j].isCorrect = true;
+                                    }
+                                    newAnswers.push(dataQuizClone[i].answers[j]);
+                                }
+                                dataQuizClone[i].answers = newAnswers;
+                            }
+                        }
+                    }
+                    setDataQuiz(dataQuizClone);
+                }
             } else {
-                alert('sth wrong.... ');
+                alert('somthing wrongs....')
             }
         }
-    };
+    }
 
-    const handleCheckbox = (answerId, questionId) => {
-        let dataQuizClone = _.cloneDeep(dataQuiz); // Clone obj vì React Hook không cho phép thao tác trực tiếp
-        let question = dataQuizClone.find(item => +item.questionId === +questionId);
-        if (question && question.answers) {
-            question.answers = question.answers.map(item => {
-                if (+item.id === +answerId) {
-                    item.isSelected = !item.isSelected;
-                }
-                return item;
-            });
-        }
-        // Báo cho cha biết user đang ở câu hỏi nào để cập nhật lại state sau khi user tick hay bỏ tick vào câu trả lời
-        let index = dataQuizClone.findIndex(item => +item.questionId === +questionId);
-        if (index > -1) {
-            dataQuizClone[index] = question;
-            setDataQuiz(dataQuizClone);
-        }
-    };
-
+    const handleShowAnswer = () => {
+        if (!isSubmitQuiz) return;
+        setIsShowAnswer(true);
+    }
     return (
         <>
             <Breadcrumb className="quiz-detail-new-header">
@@ -131,7 +169,7 @@ const DetailQuiz = (props) => {
                         {/* Gọi cái state của React Router vì bên ListQuiz trong navigate */}
                         {t('detailQuiz.title', { quizId, quizTitle: location?.state?.quizTitle })} {/* Dịch chuỗi tiêu đề */}
                     </div>
-                    <hr />
+                    <hr className="m-0" />
                     <div className="q-body">
                         <img />
                     </div>
@@ -139,8 +177,14 @@ const DetailQuiz = (props) => {
                         <Question
                             index={index}
                             handleCheckbox={handleCheckbox}
-                            data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
-                        />
+                            isShowAnswer={isShowAnswer}
+                            isSubmitQuiz={isSubmitQuiz}
+                            data={
+                                dataQuiz && dataQuiz.length > 0
+                                    ?
+                                    dataQuiz[index]
+                                    : []
+                            } />
                     </div>
                     <div className="footer">
                         <button
@@ -174,10 +218,11 @@ const DetailQuiz = (props) => {
                     show={isShowModalResult}
                     setShow={setIsShowModalResult}
                     dataModalResult={dataModalResult}
+                    handleShowAnswer={handleShowAnswer}
                 />
             </div>
         </>
-    );
-};
+    )
+}
 
 export default DetailQuiz;
