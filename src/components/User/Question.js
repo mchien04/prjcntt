@@ -1,8 +1,11 @@
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 const Question = (props) => {
     const { data, index } = props;
+
+    const { t } = useTranslation();
 
     const [isPreviewImage, setIsPreviewImage] = useState(false);
 
@@ -36,7 +39,7 @@ const Question = (props) => {
                 <div className='q-image'></div>
             }
             <div className="question">
-                Question {index + 1}: {data.questionDescription} ?
+                {t('question')} {index + 1}: {data.questionDescription} ?
             </div>
             <div className="answer">
                 {data.answers && data.answers.length > 0 &&

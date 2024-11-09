@@ -5,8 +5,11 @@ import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { putUpdateQuizForAdmin } from '../../../../services/apiService';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const ModalUpdateQuiz = (props) => {
+    const { t } = useTranslation(); // Khai báo t để sử dụng cho dịch
+
     const { show, setShow, dataUpdate, setDataUpdate } = props;
 
     const [name, setName] = useState("");
@@ -17,7 +20,7 @@ const ModalUpdateQuiz = (props) => {
 
     useEffect(() => {
         if (!_.isEmpty(dataUpdate)) {
-            //update state
+            // Update state
             setDescription(dataUpdate.description);
             setName(dataUpdate.name);
             setType(dataUpdate.difficulty);
@@ -29,7 +32,7 @@ const ModalUpdateQuiz = (props) => {
     }, [props.dataUpdate]);
 
     const handleClose = () => {
-        setShow(false)
+        setShow(false);
         setName("");
         setDescription("");
         setType("");
@@ -41,22 +44,19 @@ const ModalUpdateQuiz = (props) => {
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
             setPreviewImage(URL.createObjectURL(event.target.files[0]));
-            setImage(event.target.files[0])
-        } else {
-            // setPreviewImage("");
+            setImage(event.target.files[0]);
         }
     }
 
-
     const handSubmitUpdateQuiz = async () => {
-        //validate
+        // Validate
         if (!name) {
-            toast.error('Invalid name')
+            toast.error(t('modalUpdateQuiz.invalidName')); // Dịch chuỗi lỗi
             return;
         }
 
         if (!description) {
-            toast.error('Invalid description')
+            toast.error(t('modalUpdateQuiz.invalidDescription')); // Dịch chuỗi lỗi
             return;
         }
 
@@ -81,12 +81,12 @@ const ModalUpdateQuiz = (props) => {
                 backdrop="static"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Update the quiz</Modal.Title>
+                    <Modal.Title>{t('modalUpdateQuiz.updateQuizTitle')}</Modal.Title> {/* Tiêu đề modal */}
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
                         <div className="col-md-6">
-                            <label className="form-label">Name</label>
+                            <label className="form-label">{t('modalUpdateQuiz.name')}</label> {/* Tên Quiz */}
                             <input
                                 type="text"
                                 className="form-control"
@@ -95,7 +95,7 @@ const ModalUpdateQuiz = (props) => {
                             />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Description</label>
+                            <label className="form-label">{t('modalUpdateQuiz.description')}</label> {/* Mô tả Quiz */}
                             <input
                                 type="text"
                                 className="form-control"
@@ -105,20 +105,20 @@ const ModalUpdateQuiz = (props) => {
                         </div>
 
                         <div className="col-md-4">
-                            <label className="form-label">Difficulty</label>
+                            <label className="form-label">{t('modalUpdateQuiz.difficulty')}</label> {/* Độ khó Quiz */}
                             <select className="form-select"
                                 onChange={(event) => setType(event.target.value)}
                                 value={type}
                             >
-                                <option value="EASY">EASY</option>
-                                <option value="MEDIUM">MEDIUM</option>
-                                <option value="HARD">HARD</option>
+                                <option value="EASY">{t('modalUpdateQuiz.easy')}</option>
+                                <option value="MEDIUM">{t('modalUpdateQuiz.medium')}</option>
+                                <option value="HARD">{t('modalUpdateQuiz.hard')}</option>
                             </select>
                         </div>
 
                         <div className='col-md-12'>
                             <label className="form-label label-upload" htmlFor='labelUpload'>
-                                <FcPlus /> Upload File Image
+                                <FcPlus /> {t('modalUpdateQuiz.uploadImage')} {/* Upload Image */}
                             </label>
                             <input
                                 type="file"
@@ -129,25 +129,24 @@ const ModalUpdateQuiz = (props) => {
 
                         <div className='col-md-12 img-preview'>
                             {previewImage ?
-                                <img src={previewImage} />
+                                <img src={previewImage} alt="Preview" />
                                 :
-                                <span>Preview Image</span>
+                                <span>{t('modalUpdateQuiz.previewImage')}</span>
                             }
                         </div>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        {t('modalUpdateQuiz.close')} {/* Đóng modal */}
                     </Button>
                     <Button variant="primary" onClick={() => handSubmitUpdateQuiz()}>
-                        Save
+                        {t('modalUpdateQuiz.save')} {/* Lưu thay đổi */}
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
 }
-
 
 export default ModalUpdateQuiz;

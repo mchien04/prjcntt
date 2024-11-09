@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './QuizQA.scss';
 import { FcFullTrash } from "react-icons/fc";
-import { FaPlusSquare } from "react-icons/fa";
-import { FaMinusSquare } from "react-icons/fa";
+import { FaPlusSquare, FaMinusSquare } from "react-icons/fa";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoIosCreate } from "react-icons/io";
 import { v4 as uuidv4 } from 'uuid';
@@ -15,8 +14,10 @@ import {
     postUpsertQA
 } from "../../../../services/apiService";
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const QuizQA = (props) => {
+    const { t } = useTranslation(); // Khai báo t để sử dụng cho dịch
 
     const initQuestions = [{
         id: uuidv4(),
@@ -62,7 +63,6 @@ const QuizQA = (props) => {
         }
     }, [selectedQuiz])
 
-    // return a promise that resolves with a File instance
     const urltoFile = (url, filename, mimeType) => {
         return fetch(url)
             .then(res => res.arrayBuffer())
@@ -72,7 +72,6 @@ const QuizQA = (props) => {
     const fetchQuizWithQA = async () => {
         let res = await getQuizWithQA(selectedQuiz.value);
         if (res && res.EC === 0) {
-            // covert base64 to file object
             let newQA = [];
             for (let i = 0; i < res.DT.qa.length; i++) {
                 let q = res.DT.qa[i];
@@ -101,7 +100,6 @@ const QuizQA = (props) => {
 
             setQuestions([...questions, newQuestion]);
         }
-
 
         if (type === 'REMOVE') {
             let questionsClone = _.cloneDeep(questions);
@@ -144,7 +142,6 @@ const QuizQA = (props) => {
     }
 
     const handleOnChangeFileQuestion = (questionId, event) => {
-
         let questionsClone = _.cloneDeep(questions);
         let index = questionsClone.findIndex(item => item.id === questionId);
         if (index > -1 && event.target && event.target.files && event.target.files[0]) {
@@ -187,11 +184,10 @@ const QuizQA = (props) => {
     const handleSubmitQuestionForQuiz = async () => {
 
         if (_.isEmpty(selectedQuiz)) {
-            toast.error("Please choose a Quiz");
+            toast.error(t("quizQA.chooseQuiz"));
             return;
         }
 
-        // validate answer
         let isValidAns = true;
         let indexQuestion = 0, indexAnswer = 0;
         for (let i = 0; i < questions.length; i++) {
@@ -207,10 +203,9 @@ const QuizQA = (props) => {
         }
 
         if (!isValidAns) {
-            toast.error(`Do not empty answer ${indexAnswer + 1} at question ${indexQuestion + 1}`)
+            toast.error(t("quizQA.emptyAnswer", { answer: indexAnswer + 1, question: indexQuestion + 1 }))
         }
 
-        // validate question
         let isValidQuest = true;
         let indexQuest = 0;
         for (let i = 0; i < questions.length; i++) {
@@ -222,32 +217,15 @@ const QuizQA = (props) => {
         }
 
         if (!isValidQuest) {
-            toast.error(`Do not empty question ${indexQuest + 1}`)
+            toast.error(t("quizQA.emptyQuestion", { question: indexQuest + 1 }))
         }
 
-        // submit questions
-        // for (const question of questions) {
-        //     const q = await postCreateNewQuestionForQuiz(
-        //         +selectedQuiz.value,
-        //         question.description,
-        //         question.imageFile
-        //     );
-        //     // submit answer
-        //     for (const answer of question.answers) {
-        //         await postCreateNewAnswerForQuestion(
-        //             answer.description,
-        //             answer.isCorrect,
-        //             q.DT.id)
-        //     }
-        // }
         let questionClone = _.cloneDeep(questions);
         for (let i = 0; i < questionClone.length; i++) {
             if (questionClone[i].imageFile) {
                 questionClone[i].imageFile = await toBase64(questionClone[i].imageFile)
             }
         }
-        console.log(">>>> Question clone ", questionClone)
-        // Phần này dưới back-end xử lý chủ yếu
         let res = await postUpsertQA({
             quizId: selectedQuiz.value,
             questions: questionClone
@@ -276,7 +254,7 @@ const QuizQA = (props) => {
         <div className="questions-container">
             <div className="add-new-question">
                 <div className='col-6 form-group'>
-                    <label className='mb-2'>Select Quiz: </label>
+                    <label className='mb-2'>{t('quizQA.selectQuiz')}:</label>
                     <Select
                         value={selectedQuiz}
                         onChange={setSelectedQuiz}
@@ -284,7 +262,7 @@ const QuizQA = (props) => {
                     />
                 </div>
                 <div className='mt-3 mb-2'>
-                    Add questions:
+                    {t('quizQA.addQuestions')}:
                 </div>
                 {
                     questions && questions.length > 0
@@ -296,18 +274,18 @@ const QuizQA = (props) => {
                                         <input
                                             type="type"
                                             className="form-control"
-                                            placeholder="name@example.com"
+                                            placeholder={t('quizQA.placeholder')}
                                             value={question.description}
                                             onChange={(event) => handleOnChange('QUESTION', question.id, event.target.value)}
                                         />
-                                        <label>Description of question {index + 1}</label>
+                                        <label>{t('quizQA.questionDescription', { index: index + 1 })}</label>
                                     </div>
                                     <div className='group-upload'>
                                         <label htmlFor={`${question.id}`}>
                                             <RiImageAddFill className='label-upload' />
                                         </label>
                                         <input
-                                            id={`${question.id}`} // id để phân biệt ảnh thuộc về câu hỏi nào
+                                            id={`${question.id}`}
                                             onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
                                             type={'file'}
                                             hidden
@@ -316,7 +294,7 @@ const QuizQA = (props) => {
                                             <span
                                                 onClick={() => handlePreviewImage(question.id)}>
                                                 {question.imageName}
-                                            </span> : '0 file is uploaded'}
+                                            </span> : t('quizQA.noFileUploaded')}
                                         </span>
                                     </div>
                                     <div className='btn-group'>
@@ -345,11 +323,11 @@ const QuizQA = (props) => {
                                                     <input
                                                         type="type"
                                                         className="form-control"
-                                                        placeholder="name@example.com"
+                                                        placeholder={t('quizQA.answerPlaceholder')}
                                                         value={answer.description}
                                                         onChange={(event) => handleAnswerQuestion('INPUT', answer.id, question.id, event.target.value)}
                                                     />
-                                                    <label>Answer {index + 1}</label>
+                                                    <label>{t('quizQA.answer', { index: index + 1 })}</label>
                                                 </div>
                                                 <div className='btn-group'>
                                                     <span onClick={() => handleAddRemoveAnswer('ADD', question.id)}>
@@ -357,7 +335,7 @@ const QuizQA = (props) => {
                                                     </span>
                                                     {
                                                         question.answers.length > 1 &&
-                                                        < span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
+                                                        <span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
                                                             <FaMinusSquare className='icon-remove' />
                                                         </span>
                                                     }
@@ -374,7 +352,7 @@ const QuizQA = (props) => {
                 {
                     questions && questions.length > 0 &&
                     <div>
-                        <button onClick={() => handleSubmitQuestionForQuiz()} className='btn btn-warning'>Save Questions</button>
+                        <button onClick={() => handleSubmitQuestionForQuiz()} className='btn btn-warning'>{t('quizQA.saveQuestions')}</button>
                     </div>
                 }
 
@@ -386,12 +364,8 @@ const QuizQA = (props) => {
                     >
                     </Lightbox>
                 }
-
-
             </div>
-
-        </div >
+        </div>
     )
 }
 export default QuizQA;
-

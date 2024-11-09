@@ -4,9 +4,12 @@ import { Modal } from "react-bootstrap";
 import { FcPlus } from "react-icons/fc";
 import { postCreateNewUser } from '../../../services/apiService'
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const ModalCreateUser = (props) => {
     const { show, setShow } = props;
+
+    const { t } = useTranslation();
 
     const handleClose = () => {
         setShow(false);
@@ -45,12 +48,12 @@ const ModalCreateUser = (props) => {
         const isValidEmail = validateEmail(email);
 
         if (!isValidEmail) {
-            toast.error('Invalid email')
+            toast.error(t('modalCreateUser.invalidEmail'));
             return;
         }
 
         if (!password) {
-            toast.error('Your password is empty')
+            toast.error(t('modalCreateUser.emptyPassword'));
             return;
         }
         //call apis
@@ -79,12 +82,12 @@ const ModalCreateUser = (props) => {
                 className="modal-add-user"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add new user</Modal.Title>
+                    <Modal.Title>{t('modalCreateUser.addNewUser')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
                         <div className="col-md-6">
-                            <label className="form-label">Email</label>
+                            <label className="form-label">{t('modalCreateUser.email')}</label>
                             <input type="email"
                                 className="form-control"
                                 value={email}
@@ -92,7 +95,7 @@ const ModalCreateUser = (props) => {
                             />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Password</label>
+                            <label className="form-label">{t('modalCreateUser.password')}</label>
                             <input type="password"
                                 className="form-control"
                                 value={password}
@@ -100,7 +103,7 @@ const ModalCreateUser = (props) => {
                             />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Username</label>
+                            <label className="form-label">{t('modalCreateUser.username')}</label>
                             <input type="text"
                                 className="form-control"
                                 value={username}
@@ -108,17 +111,17 @@ const ModalCreateUser = (props) => {
                             />
                         </div>
                         <div className="col-md-4">
-                            <label className="form-label">Role</label>
+                            <label className="form-label">{t('modalCreateUser.role')}</label>
                             <select className="form-select"
                                 value={role}
                                 onChange={(event) => setRole(event.target.value)}>
-                                <option value="USER">USER</option>
-                                <option value="ADMIN">ADMIN</option>
+                                <option value="USER">{t('modalCreateUser.userRole')}</option>
+                                <option value="ADMIN">{t('modalCreateUser.adminRole')}</option>
                             </select>
                         </div>
                         <div className="col-md-12">
                             <label className="form-label label-upload" htmlFor="labelUpload">
-                                <FcPlus />Upload File Image
+                                <FcPlus />{t('modalCreateUser.uploadImage')}
                             </label>
                             <input type="file"
                                 id="labelUpload"
@@ -130,7 +133,7 @@ const ModalCreateUser = (props) => {
                             {previewImage ?
                                 <img src={previewImage} />
                                 :
-                                <span>Preview Image</span>
+                                <span>{t('modalCreateUser.previewImage')}</span>
                             }
 
                         </div>
@@ -138,10 +141,10 @@ const ModalCreateUser = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        {t('modalCreateUser.close')}
                     </Button>
                     <Button variant="primary" onClick={() => handleSubmitUser()}>
-                        Save changes
+                        {t('modalCreateUser.saveChanges')}
                     </Button>
                 </Modal.Footer>
 

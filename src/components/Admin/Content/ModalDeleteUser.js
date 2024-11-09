@@ -3,24 +3,23 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import { deleteUser } from '../../../services/apiService';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const ModalDeleteUser = (props) => {
     const { show, setShow, dataDelete } = props;
+    const { t } = useTranslation(); // Khai báo t để dùng cho dịch
 
     const handleClose = () => setShow(false);
+
     const handleSubmitDeleteUser = async () => {
-        //call apis
-        let data = await deleteUser(dataDelete.id)
+        let data = await deleteUser(dataDelete.id);
 
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            // await props.fetchUsers();
             props.setCurrentPage(1);
             await props.fetchListUsersWithPaginate(1);
-        }
-
-        if (data && data.EC != 0) {
+        } else if (data && data.EC !== 0) {
             toast.error(data.EM);
         }
     }
@@ -33,21 +32,22 @@ const ModalDeleteUser = (props) => {
                 backdrop="static"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm delete the user?</Modal.Title>
+                    <Modal.Title>{t('modalDeleteUser.confirmDeleteTitle')}</Modal.Title> {/* Tiêu đề */}
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure to delete this user with
-                    <b> email = {dataDelete && dataDelete.email ? dataDelete.email : ""}</b>
+                    {t('modalDeleteUser.confirmDeleteMessage', {
+                        email: dataDelete && dataDelete.email ? dataDelete.email : ""
+                    })} {/* Nội dung */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Cancel
+                        {t('modalDeleteUser.cancel')} {/* Nút "Cancel" */}
                     </Button>
-                    <Button variant="primary" onClick={() => { handleSubmitDeleteUser() }}>
-                        Confirm
+                    <Button variant="primary" onClick={handleSubmitDeleteUser}>
+                        {t('modalDeleteUser.confirm')} {/* Nút "Confirm" */}
                     </Button>
                 </Modal.Footer>
-            </Modal >
+            </Modal>
         </>
     );
 }

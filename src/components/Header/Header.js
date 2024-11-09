@@ -8,14 +8,15 @@ import { logout } from '../../services/apiService';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
 import './Header.scss';
-import Font, { Text } from 'react-font'
-import Language from './Language';
+import Font, { Text } from 'react-font';
+import Language from './Language';  // Giữ nguyên phần này để hỗ trợ chuyển đổi ngôn ngữ
 import { SiReactos } from "react-icons/si";
+import { useTranslation } from 'react-i18next';  // Import useTranslation từ react-i18next
 
 const Header = () => {
-
-    const isAuthenticated = useSelector(state => state.user.isAuthenticated)
-    const account = useSelector(state => state.user.account)
+    const { t } = useTranslation();  // Lấy hàm t() từ useTranslation để sử dụng các chuỗi đa ngôn ngữ
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const account = useSelector(state => state.user.account);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const Header = () => {
     const handleRegister = () => {
         navigate('/register')
     }
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
@@ -49,21 +51,21 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <NavLink to="/" className='nav-link'>Home</NavLink>
-                        <NavLink to="/users" className='nav-link'>User</NavLink>
-                        <NavLink to="/admins" className='nav-link'>Admin</NavLink>
+                        <NavLink to="/" className='nav-link'>{t('header.home')}</NavLink>
+                        <NavLink to="/users" className='nav-link'>{t('header.user')}</NavLink>
+                        <NavLink to="/admins" className='nav-link'>{t('header.admin')}</NavLink>
                     </Nav>
 
                     <Nav>
                         {isAuthenticated === false ?
                             <>
-                                <button className='btn-login' onClick={() => handleLogin()}>Log in</button>
-                                <button className='btn-signup' onClick={() => handleRegister()}>Sign up</button>
+                                <button className='btn-login' onClick={() => handleLogin()}>{t('header.logIn')}</button>
+                                <button className='btn-signup' onClick={() => handleRegister()}>{t('header.signUp')}</button>
                             </>
                             :
-                            <NavDropdown title="Settings" id="basic-nav-dropdown">
-                                <NavDropdown.Item >Profile</NavDropdown.Item>
-                                <NavDropdown.Item onClick={() => handleLogOut()}>Log out</NavDropdown.Item>
+                            <NavDropdown title={t('header.settings')} id="basic-nav-dropdown">
+                                <NavDropdown.Item>{t('header.profile')}</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => handleLogOut()}>{t('header.logOut')}</NavDropdown.Item>
                                 <NavDropdown.Divider />
                             </NavDropdown>
                         }
@@ -74,4 +76,5 @@ const Header = () => {
         </Navbar>
     );
 }
+
 export default Header;

@@ -3,13 +3,17 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 import { deleteQuizForAdmin } from '../../../../services/apiService';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const ModalDeleteQuiz = (props) => {
+    const { t } = useTranslation(); // Khai báo t để sử dụng cho dịch
+
     const { show, setShow, dataDelete } = props;
 
     const handleClose = () => setShow(false);
+
     const handleSubmitDeleteQuiz = async () => {
-        //call apis
+        // Call API to delete quiz
         let data = await deleteQuizForAdmin(dataDelete.id);
 
         if (data && data.EC === 0) {
@@ -18,7 +22,7 @@ const ModalDeleteQuiz = (props) => {
             await props.fetchQuiz();
         }
 
-        if (data && data.EC != 0) {
+        if (data && data.EC !== 0) {
             toast.error(data.EM);
         }
     }
@@ -31,22 +35,21 @@ const ModalDeleteQuiz = (props) => {
                 backdrop="static"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Confirm delete the quiz?</Modal.Title>
+                    <Modal.Title>{t('modalDeleteQuiz.confirmDeleteTitle')}</Modal.Title> {/* Tiêu đề modal */}
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure to delete this quiz with
-                    <b> name = {dataDelete && dataDelete.name ? dataDelete.name : ""}</b>
+                    {t('modalDeleteQuiz.confirmDeleteMessage')} {/* Câu hỏi xác nhận */}
+                    <b>{dataDelete && dataDelete.name ? dataDelete.name : ""}</b>
                 </Modal.Body>
                 <Modal.Footer>
-
                     <Button variant="secondary" onClick={handleClose}>
-                        Cancel
+                        {t('modalDeleteQuiz.cancel')} {/* Nút hủy */}
                     </Button>
                     <Button variant="primary" onClick={() => { handleSubmitDeleteQuiz() }}>
-                        Confirm
+                        {t('modalDeleteQuiz.confirm')} {/* Nút xác nhận */}
                     </Button>
                 </Modal.Footer>
-            </Modal >
+            </Modal>
         </>
     );
 }

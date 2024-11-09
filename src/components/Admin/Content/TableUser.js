@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
 
 const TableUser = (props) => {
     const { users } = props;
+
+    const { t } = useTranslation();
 
     return (
         <>
@@ -8,10 +11,10 @@ const TableUser = (props) => {
                 <thead>
                     <tr>
                         <th scope="col">#No.</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{t('tableuser.username')}</th>
+                        <th scope="col">{t('tableuser.email')}</th>
+                        <th scope="col">{t('tableuser.role')}</th>
+                        <th scope="col">{t('tableuser.action')}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,24 +26,25 @@ const TableUser = (props) => {
                                 <td>{item.email}</td>
                                 <td>{item.role}</td>
                                 <td>
-                                    <button className="btn btn-success">View</button>
+                                    <button className="btn btn-success">{t('tableuser.view')}</button>
                                     <button
                                         className="btn btn-warning mx-3"
                                         onClick={() => props.handleClickBtnUpdate(item)}
                                     >
-                                        Update
+                                        {t('tableuser.update')}
                                     </button>
                                     <button
                                         className="btn btn-danger"
                                         onClick={() => props.handleClickBtnDelete(item)}
-                                    >Delete</button>
+                                    >{t('tableuser.delete')}
+                                    </button>
                                 </td>
                             </tr>
                         )
                     })
                     }
                     {users && users.length === 0 && <tr>
-                        <td colSpan={'4'}>Not found data</td>
+                        <td colSpan={'4'}>{t('tableuser.noData')}</td>
                     </tr>}
                 </tbody>
             </table>

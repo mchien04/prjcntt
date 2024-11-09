@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { getAllQuizForAdmin, getAllUsers, postAssignQuiz } from '../../../../services/apiService';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const AssignQuiz = (props) => {
+
+    const { t } = useTranslation(); // Khai báo t để sử dụng cho dịch
 
     const [listQuiz, setListQuiz] = useState([]);
     const [selectedQuiz, setSelectedQuiz] = useState({});
@@ -28,6 +31,7 @@ const AssignQuiz = (props) => {
             setListQuiz(newQuiz);
         }
     }
+
     const fetchUser = async () => {
         let res = await getAllUsers();
         if (res && res.EC === 0) {
@@ -53,7 +57,7 @@ const AssignQuiz = (props) => {
     return (
         <div className="assign-quiz-container row">
             <div className='col-6 form-group'>
-                <label className='mb-2'>Select Quiz: </label>
+                <label className='mb-2'>{t('assignQuiz.selectQuizLabel')} </label> {/* Label Select Quiz */}
                 <Select
                     defaultValue={selectedQuiz}
                     onChange={setSelectedQuiz}
@@ -61,7 +65,7 @@ const AssignQuiz = (props) => {
                 />
             </div>
             <div className='col-6 form-group'>
-                <label className='mb-2'>Select User: </label>
+                <label className='mb-2'>{t('assignQuiz.selectUserLabel')} </label> {/* Label Select User */}
                 <Select
                     defaultValue={selectedUser}
                     onChange={setSelectedUser}
@@ -73,7 +77,7 @@ const AssignQuiz = (props) => {
                     className='btn btn-outline-info mt-3'
                     onClick={() => handleAssign()}
                 >
-                    Assign
+                    {t('assignQuiz.assignButton')} {/* Button text */}
                 </button>
             </div>
         </div>

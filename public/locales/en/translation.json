@@ -6,5 +6,200 @@
             "login": "Get started. It's free",
             "doing": "Doing quiz now"
         }
+    },
+    "login": {
+        "noAccount": "Don't have an account yet?",
+        "signUp": "Sign up",
+        "title": "EasyQuiz",
+        "welcome": "Hello, who's this?",
+        "emailLabel": "Email",
+        "passwordLabel": "Password",
+        "forgotPassword": "Forgot password?",
+        "loginButton": "Login",
+        "backToHomepage": "Go to Homepage",
+        "invalidEmail": "Invalid email",
+        "emptyPassword": "Your password is empty"
+    },
+    "register": {
+        "hasAccount": "Already have an account?",
+        "logIn": "Log in",
+        "title": "EasyQuiz",
+        "welcome": "Start your journey?",
+        "emailLabel": "Email (*)",
+        "passwordLabel": "Password (*)",
+        "usernameLabel": "Username",
+        "submitButton": "Create my free account",
+        "backToHomepage": "Go to Homepage",
+        "invalidEmail": "Invalid email",
+        "invalidPassword": "Invalid password"
+    },
+    "header": {
+        "home": "Home",
+        "user": "User",
+        "admin": "Admin",
+        "logIn": "Log in",
+        "signUp": "Sign up",
+        "settings": "Settings",
+        "profile": "Profile",
+        "logOut": "Log out"
+    },
+    "quiz": {
+        "quizTitle": "Quiz {{index}}",
+        "startNow": "Start now",
+        "noQuizzes": "You don't have any quiz now..."
+    },
+    "breadcrumb": {
+        "home": "Home",
+        "users": "Users",
+        "quiz": "Quiz"
+    },
+    "detailQuiz": {
+        "title": "Quiz Detail {{quizId}} : {{quizTitle}}",
+        "prev": "Previous",
+        "next": "Next Question",
+        "finish": "Submit Quiz"
+    },
+    "question": "Question",
+    "modalResult": {
+        "title": "Your result...",
+        "totalQuestions": "Total question",
+        "totalCorrectAnswers": "Total correct answers",
+        "showAnswers": "Show answers",
+        "close": "Close"
+    },
+    "admin": {
+        "settings": "Settings",
+        "profile": "Profile",
+        "logout": "Log out"
+    },
+    "sidebar": {
+        "menu": "Menu",
+        "dashboard": "Dashboard",
+        "features": "Features",
+        "manageUsers": "Manage Users",
+        "manageQuizzes": "Manage Quizzes",
+        "manageQuestions": "Manage Questions"
+    },
+    "dashboard": {
+        "analytics": "Analytics Dashboard",
+        "totalUsers": "Total users",
+        "totalQuizzes": "Total quizzes",
+        "totalQuestions": "Total questions",
+        "totalAnswers": "Total answers",
+        "quizzes": "Quizzes",
+        "questions": "Questions",
+        "answers": "Answer"
+    },
+    "manageuser": {
+        "manageUser": "Manage User",
+        "addNewUser": "Add new user"
+    },
+    "tableuser": {
+        "username": "Username",
+        "email": "Email",
+        "role": "role",
+        "action": "Action",
+        "view": "View",
+        "update": "Update",
+        "delete": "Delete",
+        "noData": "Not found data"
+    },
+    "modalCreateUser": {
+        "addNewUser": "Add new user",
+        "email": "Email",
+        "password": "Password",
+        "username": "Username",
+        "role": "Role",
+        "userRole": "USER",
+        "adminRole": "ADMIN",
+        "uploadImage": "Upload File Image",
+        "previewImage": "Preview Image",
+        "close": "Close",
+        "saveChanges": "Save changes",
+        "invalidEmail": "Invalid email",
+        "emptyPassword": "Your password is empty"
+    },
+    "modalDeleteUser": {
+        "confirmDeleteTitle": "Confirm delete the user?",
+        "confirmDeleteMessage": "Are you sure to delete this user with email = {{email}}?",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+    "modalUpdateUser": {
+        "updateUserTitle": "Update User",
+        "emailLabel": "Email",
+        "passwordLabel": "Password",
+        "usernameLabel": "Username",
+        "roleLabel": "Role",
+        "roleUser": "USER",
+        "roleAdmin": "ADMIN",
+        "uploadImage": "Upload Image",
+        "previewImage": "Preview Image",
+        "close": "Close",
+        "saveChanges": "Save changes"
+    },
+    "assignQuiz": {
+        "selectQuizLabel": "Select Quiz",
+        "selectUserLabel": "Select User",
+        "assignButton": "Assign"
+    },
+    "manageQuiz": {
+        "manageQuizzes": "Manage Quizzes",
+        "addNewQuiz": "Add new Quiz",
+        "quizNamePlaceholder": "Your quiz name",
+        "quizDescriptionPlaceholder": "Quiz description",
+        "quizTypePlaceholder": "Quiz type...",
+        "name": "Name",
+        "description": "Description",
+        "uploadImageLabel": "Upload Image",
+        "save": "Save",
+        "updateQuizTitle": "Update Q/A Quizzes",
+        "assignQuizTitle": "Assign to User",
+        "nameDescriptionRequired": "Name or Description is required",
+        "easy": "EASY",
+        "medium": "MEDIUM",
+        "hard": "HARD"
+    },
+    "modalUpdateQuiz": {
+        "updateQuizTitle": "Update the quiz",
+        "name": "Name",
+        "description": "Description",
+        "difficulty": "Difficulty",
+        "easy": "EASY",
+        "medium": "MEDIUM",
+        "hard": "HARD",
+        "uploadImage": "Upload File Image",
+        "previewImage": "Preview Image",
+        "invalidName": "Invalid name",
+        "invalidDescription": "Invalid description",
+        "close": "Close",
+        "save": "Save"
+    },
+    "modalDeleteQuiz": {
+        "confirmDeleteTitle": "Confirm delete the quiz?",
+        "confirmDeleteMessage": "Are you sure to delete this quiz with",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+    },
+    "tableQuiz": {
+        "listQuizzes": "List Quizzes",
+        "id": "ID",
+        "name": "Name",
+        "description": "Description",
+        "type": "Type",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "quizQA": {
+        "selectQuiz": "Please choose a quiz",
+        "addQuestions": "Add questions",
+        "questionDescription": "Question description {{index}}",
+        "noFileUploaded": "No file uploaded",
+        "saveQuestions": "Save questions",
+        "emptyAnswer": "Answer {{answer}} cannot be empty in question {{question}}",
+        "emptyQuestion": "Question {{question}} cannot be empty",
+        "answer": "Answer {{index}}",
+        "answerPlaceholder": "Enter answer"
     }
 }

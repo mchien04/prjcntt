@@ -11,8 +11,10 @@ import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
 import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from "../../../../services/apiService";
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const Questions = (props) => {
+    const { t } = useTranslation(); // sử dụng i18n hook
 
     const initQuestions = [{
         id: uuidv4(),
@@ -25,12 +27,11 @@ const Questions = (props) => {
     }];
 
     const [questions, setQuestions] = useState(initQuestions);
-
     const [isPreviewImage, setIsPreviewImage] = useState(false);
     const [dataImagePreview, setDataImagePreview] = useState({
         title: '',
         url: ''
-    })
+    });
 
     const [listQuiz, setListQuiz] = useState([]);
     const [selectedQuiz, setSelectedQuiz] = useState({});
@@ -66,7 +67,6 @@ const Questions = (props) => {
 
             setQuestions([...questions, newQuestion]);
         }
-
 
         if (type === 'REMOVE') {
             let questionsClone = _.cloneDeep(questions);
@@ -145,7 +145,7 @@ const Questions = (props) => {
     const handleSubmitQuestionForQuiz = async () => {
 
         if (_.isEmpty(selectedQuiz)) {
-            toast.error("Please choose a Quiz");
+            toast.error(t('quizQA.selectQuiz'));
             return;
         }
 
@@ -165,7 +165,7 @@ const Questions = (props) => {
         }
 
         if (!isValidAns) {
-            toast.error(`Do not empty answer ${indexAnswer + 1} at question ${indexQuestion + 1}`)
+            toast.error(t('quizQA.emptyAnswer', { answer: indexAnswer + 1, question: indexQuestion + 1 }));
         }
 
         // validate question
@@ -180,7 +180,7 @@ const Questions = (props) => {
         }
 
         if (!isValidQuest) {
-            toast.error(`Do not empty question ${indexQuest + 1}`)
+            toast.error(t('quizQA.emptyQuestion', { question: indexQuest + 1 }));
         }
 
         // submit questions
@@ -199,7 +199,7 @@ const Questions = (props) => {
             }
         }
 
-        toast.success('Create questions for quiz successfully!')
+        toast.success(t('quizQA.saveQuestions'));
         setQuestions(initQuestions);
     }
 
@@ -218,12 +218,12 @@ const Questions = (props) => {
     return (
         <div className="questions-container">
             <div className="title">
-                Manage Questions
+                {t('quizQA.manageQuestions')}
             </div>
             <hr />
             <div className="add-new-question">
                 <div className='col-6 form-group'>
-                    <label className='mb-2'>Select Quiz: </label>
+                    <label className='mb-2'>{t('quizQA.selectQuiz')}</label>
                     <Select
                         value={selectedQuiz}
                         onChange={setSelectedQuiz}
@@ -231,7 +231,7 @@ const Questions = (props) => {
                     />
                 </div>
                 <div className='mt-3 mb-2'>
-                    Add questions:
+                    {t('quizQA.addQuestions')}
                 </div>
                 {
                     questions && questions.length > 0
@@ -247,24 +247,21 @@ const Questions = (props) => {
                                             value={question.description}
                                             onChange={(event) => handleOnChange('QUESTION', question.id, event.target.value)}
                                         />
-                                        <label>Description of question {index + 1}</label>
+                                        <label>{t('quizQA.questionDescription', { index: index + 1 })}</label>
                                     </div>
                                     <div className='group-upload'>
                                         <label htmlFor={`${question.id}`}>
                                             <RiImageAddFill className='label-upload' />
                                         </label>
                                         <input
-                                            id={`${question.id}`} // id để phân biệt ảnh thuộc về câu hỏi nào
+                                            id={`${question.id}`}
                                             onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
                                             type={'file'}
                                             hidden
                                         />
                                         <span style={{ cursor: 'pointer' }}> {question.imageName ?
-                                            <span
-
-                                                onClick={() => handlePreviewImage(question.id)}>
-                                                {question.imageName}
-                                            </span> : '0 file is uploaded'}
+                                            <span onClick={() => handlePreviewImage(question.id)}>{question.imageName}</span> :
+                                            t('quizQA.noFileUploaded')}
                                         </span>
                                     </div>
                                     <div className='btn-group'>
@@ -297,7 +294,7 @@ const Questions = (props) => {
                                                         value={answer.description}
                                                         onChange={(event) => handleAnswerQuestion('INPUT', answer.id, question.id, event.target.value)}
                                                     />
-                                                    <label>Answer {index + 1}</label>
+                                                    <label>{t('quizQA.answer', { index: index + 1 })}</label>
                                                 </div>
                                                 <div className='btn-group'>
                                                     <span onClick={() => handleAddRemoveAnswer('ADD', question.id)}>
@@ -305,7 +302,7 @@ const Questions = (props) => {
                                                     </span>
                                                     {
                                                         question.answers.length > 1 &&
-                                                        < span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
+                                                        <span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
                                                             <FaMinusSquare className='icon-remove' />
                                                         </span>
                                                     }
@@ -322,7 +319,7 @@ const Questions = (props) => {
                 {
                     questions && questions.length > 0 &&
                     <div>
-                        <button onClick={() => handleSubmitQuestionForQuiz()} className='btn btn-warning'>Save Questions</button>
+                        <button onClick={() => handleSubmitQuestionForQuiz()} className='btn btn-warning'>{t('quizQA.saveQuestions')}</button>
                     </div>
                 }
 
@@ -331,16 +328,11 @@ const Questions = (props) => {
                         image={dataImagePreview.url}
                         title={dataImagePreview.title}
                         onClose={() => setIsPreviewImage(false)}
-                    >
-                    </Lightbox>
+                    />
                 }
-
-
             </div>
-
-        </div >
+        </div>
     )
 }
 
 export default Questions;
-
