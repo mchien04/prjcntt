@@ -34,7 +34,12 @@ const TableUserPaginate = (props) => {
                                 <td>{item.email}</td>
                                 <td>{item.role}</td>
                                 <td>
-                                    <button className="btn btn-success">{t('tableuser.view')}</button>
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={() => props.handleClickBtnView(item)}
+                                    >
+                                        {t('tableuser.view')}
+                                    </button>
                                     <button
                                         className="btn btn-warning mx-3"
                                         onClick={() => props.handleClickBtnUpdate(item)}

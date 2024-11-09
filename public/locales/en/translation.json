@@ -200,6 +200,7 @@
         "emptyAnswer": "Answer {{answer}} cannot be empty in question {{question}}",
         "emptyQuestion": "Question {{question}} cannot be empty",
         "answer": "Answer {{index}}",
-        "answerPlaceholder": "Enter answer"
+        "answerPlaceholder": "Enter answer",
+        "manageQuestions": "Manage Questions"
     }
 }
