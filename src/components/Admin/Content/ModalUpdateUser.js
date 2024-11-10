@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'; // Import useTranslation
 const ModalUpdateUser = (props) => {
     const { show, setShow, dataUpdate } = props;
     const { t } = useTranslation(); // Khai báo t để dùng cho dịch
-
+    console.log('daya', dataUpdate);
     const handleClose = () => {
         setShow(false);
         setEmail("");

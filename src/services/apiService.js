@@ -80,6 +80,23 @@ const logout = (email, refresh_token) => axios.post('api/v1/logout', { email, re
 
 const getOverview = () => axios.get('api/v1/overview');
 
+const postUpdateProfile = (username, image) => {
+    const data = new FormData();
+    data.append('username', username);
+    data.append('userImage', image);
+    return axios.post('api/v1/profile', data);
+}
+
+const postChangePassword = (current_password, new_password) => {
+    const data = new FormData();
+    data.append('current_password', current_password);
+    data.append('new_password', new_password);
+    return axios.post('api/v1/change-password', data);
+}
+
+const getHistory = () => axios.get(`api/v1/history`);
+
+
 export {
     postCreateNewUser, getAllUsers, putUpdateUser,
     deleteUser, getUsersWithPaginate, postLogin,
@@ -88,5 +105,5 @@ export {
     putUpdateQuizForAdmin, deleteQuizForAdmin,
     postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion,
     postAssignQuiz, getQuizWithQA, postUpsertQA,
-    logout, getOverview
+    logout, getOverview, postUpdateProfile, postChangePassword, getHistory
 }

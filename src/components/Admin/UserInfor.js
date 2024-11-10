@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import './Header.scss';
+
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { FcPlus } from 'react-icons/fc';

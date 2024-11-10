@@ -12,6 +12,8 @@ import Font, { Text } from 'react-font';
 import Language from './Language';  // Giữ nguyên phần này để hỗ trợ chuyển đổi ngôn ngữ
 import { SiReactos } from "react-icons/si";
 import { useTranslation } from 'react-i18next';  // Import useTranslation từ react-i18next
+import { useState } from 'react';
+import Profile from './Profile';
 
 const Header = () => {
     const { t } = useTranslation();  // Lấy hàm t() từ useTranslation để sử dụng các chuỗi đa ngôn ngữ
@@ -20,6 +22,8 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userRole = account?.role;  // Lấy vai trò của người dùng
+    const [isShowModalProfile, setIsShowModalProfile] = useState(false);
+
 
     const handleLogOut = async () => {
         let res = await logout(account.email, account.refresh_token);
@@ -41,50 +45,57 @@ const Header = () => {
     }
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
-            <Container>
-                <SiReactos className='logo' />
-                <NavLink to="/" className='navbar-brand'>
-                    <Font family='Rubik Bubbles'>
-                        <p className='logo-content'>EasyQuiz</p>
-                    </Font>
-                </NavLink>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <NavLink to="/" className='nav-link'>{t('header.home')}</NavLink>
+        <>
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <SiReactos className='logo' />
+                    <NavLink to="/" className='navbar-brand'>
+                        <Font family='Rubik Bubbles'>
+                            <p className='logo-content'>EasyQuiz</p>
+                        </Font>
+                    </NavLink>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <NavLink to="/" className='nav-link'>{t('header.home')}</NavLink>
 
-                        {/* Chỉ hiển thị liên kết "user" khi đã đăng nhập */}
-                        {isAuthenticated && (
-                            <NavLink to="/users" className='nav-link'>{t('header.user')}</NavLink>
-                        )}
+                            {/* Chỉ hiển thị liên kết "user" khi đã đăng nhập */}
+                            {isAuthenticated && (
+                                <NavLink to="/users" className='nav-link'>{t('header.user')}</NavLink>
+                            )}
 
-                        {/* Hiển thị liên kết "admin" chỉ khi người dùng có vai trò là "ADMIN" */}
-                        {userRole === 'ADMIN' && (
-                            <NavLink to="/admins" className='nav-link'>{t('header.admin')}</NavLink>
-                        )}
-                    </Nav>
+                            {/* Hiển thị liên kết "admin" chỉ khi người dùng có vai trò là "ADMIN" */}
+                            {userRole === 'ADMIN' && (
+                                <NavLink to="/admins" className='nav-link'>{t('header.admin')}</NavLink>
+                            )}
+                        </Nav>
 
-                    <Nav>
-                        {/* Hiển thị nút login và register khi chưa đăng nhập */}
-                        {!isAuthenticated ? (
-                            <>
-                                <button className='btn-login' onClick={handleLogin}>{t('header.logIn')}</button>
-                                <button className='btn-signup' onClick={handleRegister}>{t('header.signUp')}</button>
-                            </>
-                        ) : (
-                            // Hiển thị phần cài đặt và đăng xuất khi đã đăng nhập
-                            <NavDropdown title={t('header.settings')} id="basic-nav-dropdown">
-                                <NavDropdown.Item>{t('header.profile')}</NavDropdown.Item>
-                                <NavDropdown.Item onClick={handleLogOut}>{t('header.logOut')}</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                            </NavDropdown>
-                        )}
-                        <Language />
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+                        <Nav>
+                            {/* Hiển thị nút login và register khi chưa đăng nhập */}
+                            {!isAuthenticated ? (
+                                <>
+                                    <button className='btn-login' onClick={handleLogin}>{t('header.logIn')}</button>
+                                    <button className='btn-signup' onClick={handleRegister}>{t('header.signUp')}</button>
+                                </>
+                            ) : (
+                                // Hiển thị phần cài đặt và đăng xuất khi đã đăng nhập
+                                <NavDropdown title={t('header.settings')} id="basic-nav-dropdown">
+                                    {/* <NavDropdown.Item>{t('header.profile')}</NavDropdown.Item> */}
+                                    <NavDropdown.Item onClick={() => setIsShowModalProfile(true)}>{t('header.profile')}</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={handleLogOut}>{t('header.logOut')}</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                </NavDropdown>
+                            )}
+                            <Language />
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <Profile
+                show={isShowModalProfile}
+                setShow={setIsShowModalProfile}
+            />
+        </>
     );
 }
 

@@ -13,7 +13,6 @@ import { doLogout } from '../../redux/action/userAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import Profile from './Profile';
 
 const Admin = (props) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -23,7 +22,6 @@ const Admin = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [isShowModalProfile, setIsShowModalProfile] = useState(false);
 
     const handleLogOut = async () => {
         let res = await logout(account.email, account.refresh_token);
