@@ -202,5 +202,48 @@
         "answer": "Câu trả lời {{index}}",
         "answerPlaceholder": "Nhập câu trả lời",
         "manageQuestions": "Quản lý câu hỏi"
+    },
+    "modalDetailUser": {
+        "userDetailTitle": "Chi tiết người dùng",
+        "emailLabel": "Email",
+        "usernameLabel": "Tên người dùng",
+        "roleLabel": "Vai trò",
+        "close": "Đóng"
+    },
+    "profile": {
+        "title": "Hồ sơ",
+        "tabs": {
+            "userInfo": "Thông tin người dùng",
+            "changePassword": "Thay đổi mật khẩu",
+            "history": "Lịch sử"
+        }
+    },
+    "userInfo": {
+        "usernameLabel": "Tên người dùng",
+        "emailLabel": "Email",
+        "roleLabel": "Vai trò",
+        "roleUser": "USER",
+        "roleAdmin": "ADMIN",
+        "uploadImage": "Tải ảnh lên",
+        "previewImage": "Ảnh xem trước",
+        "updateButton": "Cập nhật"
+    },
+    "password": {
+        "currentPasswordLabel": "Mật khẩu hiện tại",
+        "newPasswordLabel": "Mật khẩu mới",
+        "confirmNewPasswordLabel": "Xác nhận mật khẩu mới",
+        "currentPasswordPlaceholder": "Nhập mật khẩu hiện tại",
+        "newPasswordPlaceholder": "Nhập mật khẩu mới",
+        "confirmNewPasswordPlaceholder": "Nhập lại mật khẩu mới",
+        "errorPasswordMismatch": "Mật khẩu mới và mật khẩu xác nhận không trùng khớp",
+        "submitButton": "Xác nhận thay đổi"
+    },
+    "history": {
+        "id": "ID",
+        "quizName": "Tên Quiz",
+        "totalQuestions": "Tổng số câu hỏi",
+        "totalCorrect": "Số câu đúng",
+        "date": "Ngày",
+        "noData": "Không có dữ liệu"
     }
 }

@@ -6,12 +6,17 @@ import Image from 'react-bootstrap/Image';
 import { Modal } from "react-bootstrap";
 import _ from 'lodash';
 import { IoImagesSharp } from "react-icons/io5";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
+
 const ModalDetailUser = (props) => {
     const { show, setShow, dataDetail } = props;
+    const { t } = useTranslation(); // Khai báo t để dùng cho dịch
+
     const handleClose = () => {
         setShow(false);
         props.resetDetailData();
     }
+
     return (
         <>
             <Modal show={show}
@@ -21,7 +26,7 @@ const ModalDetailUser = (props) => {
                 className="modal-add-user"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>User Detail</Modal.Title>
+                    <Modal.Title>{t('modalDetailUser.userDetailTitle')}</Modal.Title> {/* Dịch tiêu đề */}
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
@@ -41,7 +46,7 @@ const ModalDetailUser = (props) => {
                             </Col>
                         </Row>
                         <div className="col-md-6">
-                            <label className="form-label">Email</label>
+                            <label className="form-label">{t('modalDetailUser.emailLabel')}</label> {/* Dịch Label Email */}
                             <input type="email"
                                 className="form-control"
                                 value={dataDetail.email}
@@ -49,7 +54,7 @@ const ModalDetailUser = (props) => {
                             />
                         </div>
                         <div className="col-md-6">
-                            <label className="form-label">Username</label>
+                            <label className="form-label">{t('modalDetailUser.usernameLabel')}</label> {/* Dịch Label Username */}
                             <input type="text"
                                 className="form-control"
                                 value={dataDetail.username}
@@ -57,7 +62,7 @@ const ModalDetailUser = (props) => {
                             />
                         </div>
                         <div className="col-md-4">
-                            <label className="form-label">Role</label>
+                            <label className="form-label">{t('modalDetailUser.roleLabel')}</label> {/* Dịch Label Role */}
                             <input type="text"
                                 className="form-control"
                                 value={dataDetail.role}
@@ -68,11 +73,11 @@ const ModalDetailUser = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        {t('modalDetailUser.close')} {/* Dịch nút Đóng */}
                     </Button>
                 </Modal.Footer>
-            </Modal >
+            </Modal>
         </>
     );
 }
-export default ModalDetailUser
+export default ModalDetailUser;

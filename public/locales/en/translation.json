@@ -202,5 +202,48 @@
         "answer": "Answer {{index}}",
         "answerPlaceholder": "Enter answer",
         "manageQuestions": "Manage Questions"
+    },
+    "modalDetailUser": {
+        "userDetailTitle": "User Detail",
+        "emailLabel": "Email",
+        "usernameLabel": "Username",
+        "roleLabel": "Role",
+        "close": "Close"
+    },
+    "profile": {
+        "title": "Profile",
+        "tabs": {
+            "userInfo": "User Information",
+            "changePassword": "Change Password",
+            "history": "History"
+        }
+    },
+    "userInfo": {
+        "usernameLabel": "Username",
+        "emailLabel": "Email",
+        "roleLabel": "Role",
+        "roleUser": "USER",
+        "roleAdmin": "ADMIN",
+        "uploadImage": "Upload Image",
+        "previewImage": "Preview Image",
+        "updateButton": "Update"
+    },
+    "password": {
+        "currentPasswordLabel": "Current Password",
+        "newPasswordLabel": "New Password",
+        "confirmNewPasswordLabel": "Confirm New Password",
+        "currentPasswordPlaceholder": "Enter current password",
+        "newPasswordPlaceholder": "Enter new password",
+        "confirmNewPasswordPlaceholder": "Re-enter new password",
+        "errorPasswordMismatch": "New password and confirmation do not match",
+        "submitButton": "Confirm Change"
+    },
+    "history": {
+        "id": "ID",
+        "quizName": "Quiz Name",
+        "totalQuestions": "Total Questions",
+        "totalCorrect": "Total Correct",
+        "date": "Date",
+        "noData": "No data"
     }
 }

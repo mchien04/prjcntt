@@ -37,13 +37,13 @@ const Profile = (props) => {
                         id="uncontrolled-tab-example"
                         className="mb-3"
                     >
-                        <Tab eventKey="profile" title="User Information">
+                        <Tab eventKey="profile" title={t('profile.tabs.userInfo')}>
                             <UserInfor />
                         </Tab>
-                        <Tab eventKey="password" title="Change Password">
+                        <Tab eventKey="password" title={t('profile.tabs.changePassword')}>
                             <Password />
                         </Tab>
-                        <Tab eventKey="history" title="History">
+                        <Tab eventKey="history" title={t('profile.tabs.history')}>
                             <History />
                         </Tab>
                     </Tabs>

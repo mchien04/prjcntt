@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getHistory } from "../../services/apiService";
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const History = (props) => {
     const [lisHistory, setListHistory] = useState([]);
+    const { t } = useTranslation();
+
     useEffect(() => {
         fetchHistory();
     }, []);
@@ -32,11 +35,11 @@ const History = (props) => {
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Quiz Name</th>
-                        <th>total Questions</th>
-                        <th>total Correct</th>
-                        <th>Date</th>
+                        <th>{t('history.id')}</th>
+                        <th>{t('history.quizName')}</th>
+                        <th>{t('history.totalQuestions')}</th>
+                        <th>{t('history.totalCorrect')}</th>
+                        <th>{t('history.date')}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +58,7 @@ const History = (props) => {
                     }
                     {lisHistory && lisHistory.length === 0 &&
                         <tr>
-                            <td colSpan={'4'}>no data</td>
+                            <td colSpan={'5'}>{t('history.noData')}</td>
                         </tr>
                     }
                 </tbody>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { FcPlus } from 'react-icons/fc';
@@ -56,7 +55,7 @@ const UserInfor = (props) => {
         <div className='user-infor-container'>
             <div className="row g-3">
                 <div className="col-md-4">
-                    <label className="form-label">Username</label>
+                    <label className="form-label">{t('userInfo.usernameLabel')}</label>
                     <input
                         type="text"
                         className="form-control"
@@ -65,7 +64,7 @@ const UserInfor = (props) => {
                     />
                 </div>
                 <div className="col-md-4">
-                    <label className="form-label">Email</label>
+                    <label className="form-label">{t('userInfo.emailLabel')}</label>
                     <input
                         disabled
                         type="email"
@@ -77,22 +76,22 @@ const UserInfor = (props) => {
 
                 <div className="col-md-4">
                     <label className="form-label">
-                        Role
+                        {t('userInfo.roleLabel')}
                     </label>
                     <select className="form-select"
                         onChange={(event) => setRole(event.target.value)}
                         value={role}
                         disabled
                     >
-                        <option value="USER">USER</option>
-                        <option value="ADMIN">ADMIN</option>
+                        <option value="USER">{t('userInfo.roleUser')}</option>
+                        <option value="ADMIN">{t('userInfo.roleAdmin')}</option>
                     </select>
                 </div>
 
                 <div className="col-md-12">
                     <label className="form-label label-upload" htmlFor="labelUpload">
                         <FcPlus />
-                        upload File Image
+                        {t('userInfo.uploadImage')}
                     </label>
                     <input
                         type="file"
@@ -106,12 +105,14 @@ const UserInfor = (props) => {
                         <img src={previewImage} alt="Preview" />
                         :
                         <span>
-                            Preview Image</span>
+                            {t('userInfo.previewImage')}
+                        </span>
                     }
                 </div>
                 <div className='mt-3'>
                     <button className="btn btn-primary mt-3" onClick={() => handleSubmitProfile()}>
-                        Update</button>
+                        {t('userInfo.updateButton')}
+                    </button>
                 </div>
             </div>
         </div>
